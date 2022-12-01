@@ -12,20 +12,37 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 def compute(s: str) -> int:
     n = 0
-    for c in s.strip():
-        if c == '(':
-            n += 1
-        elif c == ')':
-            n -= 1
+    #for c in support.parse_numbers_split(s):
+     #   print(c)
+    elve =0
+    maxcalories=0
+    for line in s.splitlines():
+        if line :
+            elve += int(line)
         else:
-            raise AssertionError(f'unexpected: {c!r}')
-    return n
+            if elve>maxcalories:
+                maxcalories=elve
+            elve=0
+    
+        # if c == '(':
+        #     n += 1
+        # elif c == ')':
+        #     n -= 1
+        # else:
+        #     raise AssertionError(f'unexpected: {c!r}')
+    return maxcalories
 
 
 INPUT_S = '''\
-))(((((
+3
+3
+4
+
+0
+
+2
 '''
-EXPECTED = 3
+EXPECTED = 10
 
 
 @pytest.mark.parametrize(

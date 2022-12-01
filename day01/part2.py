@@ -12,22 +12,43 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 def compute(s: str) -> int:
     n = 0
-    for i, c in enumerate(s.strip(), start=1):
-        if c == '(':
-            n += 1
-        elif c == ')':
-            n -= 1
-            if n == -1:
-                return i
+    #for c in support.parse_numbers_split(s):
+     #   print(c)
+    elves=[]
+    elve =0
+    maxcalories=0
+    for line in s.splitlines():
+        if line :
+            elve += int(line)
         else:
-            raise AssertionError(f'unexpected: {c!r}')
-    raise AssertionError('unreachable')
+            elves.append(elve)
+            #   if elve>maxcalories:
+            #    maxcalories=elve
+            elve=0
+    
+    elves.sort(reverse=True)
+    total=sum(elves[0:3])
+    return total
 
 
 INPUT_S = '''\
-()())
+5
+5
+5
+
+1
+1
+1
+1
+
+3
+
+22
+
+21
+
 '''
-EXPECTED = 5
+EXPECTED = 58
 
 
 @pytest.mark.parametrize(
