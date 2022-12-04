@@ -17,11 +17,8 @@ def compute(s: str) -> int:
         r=line.replace('-', ',').split(',') 
         set1=set(range(int(r[0]),int(r[1])+1 ))
         set2=set(range(int(r[2]),int(r[3])+1 ))
-        if len(set1 & set2) == min(len(set1),len(set2)) :
+        if len(set1 & set2) !=0 :
             counter+=1
-       # print(set1)
-        #print(set2)
-       # print(counter)
     return counter
 
 
@@ -33,7 +30,7 @@ INPUT_S = '''\
 6-6,4-6
 2-6,4-8
 '''
-EXPECTED = 2
+EXPECTED = 4
 
 
 @pytest.mark.parametrize(
