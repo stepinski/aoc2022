@@ -6,31 +6,82 @@ import os.path
 import pytest
 
 import support
+import re
 
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
-
-def compute(s: str) -> int:
+def compute(s: str) -> str:
     counter =0
-
+    switch=False
+    stacks=[]
+    procs = [] 
     for line in s.splitlines():
-        r=line.replace('-', ',').split(',') 
-        set1=set(range(int(r[0]),int(r[1])+1 ))
-        set2=set(range(int(r[2]),int(r[3])+1 ))
-        if len(set1 & set2) !=0 :
-            counter+=1
-    return counter
+        if line :
+            r=line.replace('] [', ',')
+            r=r.replace(']', '') 
+            r=r.replace('[', '')
+            #r=r.replace(']', '') 
+           # r=r.replace('[', '')  
+            r=r.replace('    ',',')
+            #r=r.replace('  ',',')  
+              
+            r=r.replace('move ', '')
+            r=r.replace('from ', '')
+            r=r.replace('to ', '') 
+            r=r.replace('   ',',')
+            r=r.strip()    
+            r=r.replace(' ',',')  
+            r = r.split(',') 
+            
+            if switch ==False :
+                stacks.append(r) 
+            else:
+                procs.append(r)
+        else :
+            switch=True
+    
+    cols = list(zip(*stacks[:-1]))
+    stacksT = [[item for item in items if item!=''] for items in cols]
+    
+    #print(stacksT)
+    # print(stacks[:-1])
 
+    #print(stacksT[0])
+    #print(stacksT[1])
+
+    print(procs)
+    print(stacksT)
+
+    for proc in procs:
+
+
+        tomove=stacksT[int(proc[1])-1][0:(int(proc[0]))]
+        list1=stacksT[int(proc[1])-1] 
+        list2=stacksT[int(proc[2])-1]
+        stacksT[int(proc[1])-1] =stacksT[int(proc[1])-1][int(proc[0]):]
+        tomove.extend(list2) # stacksT[int(proc[1])-1][int(proc[0]):]
+        stacksT[int(proc[2])-1]=tomove
+        #print('===')
+        print(stacksT)
+        #print('___')
+    ret=''.join([c[0] for c in stacksT])
+    return ret
+
+#[['', 'D', ''], ['N', 'C', ''], ['Z', 'M', 'P'], ['', '1', '', '', '2', '', '', '3', '']]
+#[['1', '2', '1'], ['3', '1', '3'], ['2', '2', '1'], ['1', '1', '2']]
 
 INPUT_S = '''\
-2-4,6-8
-2-3,4-5
-5-7,7-9
-2-8,3-7
-6-6,4-6
-2-6,4-8
+    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2
 '''
-EXPECTED = 4
+EXPECTED = 'MCD'
 
 
 @pytest.mark.parametrize(
