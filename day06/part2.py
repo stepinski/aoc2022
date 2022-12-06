@@ -10,84 +10,77 @@ import re
 
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
-def compute(s: str) -> str:
+def compute(s: str) -> int:
     counter =0
+    lastfour=""
     switch=False
     stacks=[]
-    procs = [] 
-    for line in s.splitlines():
-        if line :
-            r=line.replace('] [', ',')
-            r=r.replace(']', '') 
-            r=r.replace('[', '')
-            #r=r.replace(']', '') 
-           # r=r.replace('[', '')  
-            r=r.replace('    ',',')
-            #r=r.replace('  ',',')  
-              
-            r=r.replace('move ', '')
-            r=r.replace('from ', '')
-            r=r.replace('to ', '') 
-            r=r.replace('   ',',')
-            r=r.strip()    
-            r=r.replace(' ',',')  
-            r = r.split(',') 
+    procs = []
+    found=0 
+    for c in s:
+        # print(c)
+        # print(lastfour)
+        # print("---")
+        
+        register=lastfour[-14:]
+        if len(set(register)) ==14 :
             
-            if switch ==False :
-                stacks.append(r) 
-            else:
-                procs.append(r)
-        else :
-            switch=True
-    
-    cols = list(zip(*stacks[:-1]))
-    stacksT = [[item for item in items if item!=''] for items in cols]
-    
-    #print(stacksT)
-    # print(stacks[:-1])
+            break
+        # if c not in register :
+        #     found+=1
+            
+        # else :
+        #     idx=register.find(c)
+        #     found-=idx
+        #     #counter=0
 
-    #print(stacksT[0])
-    #print(stacksT[1])
+        # if found ==4 and counter>=4 :
+        #     break;
 
-    print(procs)
-    print(stacksT)
-
-    for proc in procs:
-
-
-        tomove=stacksT[int(proc[1])-1][0:(int(proc[0]))]
-        list1=stacksT[int(proc[1])-1] 
-        list2=stacksT[int(proc[2])-1]
-        stacksT[int(proc[1])-1] =stacksT[int(proc[1])-1][int(proc[0]):]
-        tomove.extend(list2) # stacksT[int(proc[1])-1][int(proc[0]):]
-        stacksT[int(proc[2])-1]=tomove
-        #print('===')
-        print(stacksT)
-        #print('___')
-    ret=''.join([c[0] for c in stacksT])
-    return ret
+        lastfour+=c
+        counter+=1
+    return counter
 
 #[['', 'D', ''], ['N', 'C', ''], ['Z', 'M', 'P'], ['', '1', '', '', '2', '', '', '3', '']]
 #[['1', '2', '1'], ['3', '1', '3'], ['2', '2', '1'], ['1', '1', '2']]
 
 INPUT_S = '''\
-    [D]    
-[N] [C]    
-[Z] [M] [P]
- 1   2   3 
-
-move 1 from 2 to 1
-move 3 from 1 to 3
-move 2 from 2 to 1
-move 1 from 1 to 2
+mjqjpqmgbljsphdztnvjfqwrcgsmlb
 '''
-EXPECTED = 'MCD'
+EXPECTED = 19
+
+INPUT_S2 = '''\
+bvwbjplbgvbhsrlpgdmjqwftvncz
+'''
+EXPECTED2 = 23
+
+INPUT_S3 = '''\
+nppdvjthqldpwncqszvftbrmjlhg
+'''
+EXPECTED3 = 23
+
+INPUT_S4 = '''\
+nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg
+'''
+EXPECTED4 = 29
+
+INPUT_S5 = '''\
+zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw
+'''
+EXPECTED5 = 26
+
+
+
 
 
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
         (INPUT_S, EXPECTED),
+        (INPUT_S2, EXPECTED2),
+        (INPUT_S3, EXPECTED3),
+        (INPUT_S4, EXPECTED4),
+        (INPUT_S5, EXPECTED5),
     ),
 )
 def test(input_s: str, expected: int) -> None:
