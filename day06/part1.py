@@ -21,16 +21,21 @@ def compute(s: str) -> int:
         # print(c)
         # print(lastfour)
         # print("---")
-        if c not in lastfour[-4:] :
-            #if counter>3 :
-            found+=1
+        
+        register=lastfour[-4:]
+        if len(set(register)) ==4 :
             
-        else :
-            found-=1
-            #counter=0
+            break
+        # if c not in register :
+        #     found+=1
+            
+        # else :
+        #     idx=register.find(c)
+        #     found-=idx
+        #     #counter=0
 
-        if found ==4 and counter>=4 :
-            break;
+        # if found ==4 and counter>=4 :
+        #     break;
 
         lastfour+=c
         counter+=1
@@ -40,15 +45,34 @@ def compute(s: str) -> int:
 #[['1', '2', '1'], ['3', '1', '3'], ['2', '2', '1'], ['1', '1', '2']]
 
 INPUT_S = '''\
-bvwbjplbgvbhsrlpgdmjqwftvncz:
+bvwbjplbgvbhsrlpgdmjqwftvncz
 '''
 EXPECTED = 5
+
+INPUT_S2 = '''\
+nppdvjthqldpwncqszvftbrmjlhg
+'''
+EXPECTED2 = 6
+
+INPUT_S3 = '''\
+nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg
+'''
+EXPECTED3 = 10
+
+INPUT_S4 = '''\
+zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw
+'''
+EXPECTED4 = 11
+
 
 
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
         (INPUT_S, EXPECTED),
+        (INPUT_S2, EXPECTED2),
+        (INPUT_S3, EXPECTED3),
+        (INPUT_S4, EXPECTED4),
     ),
 )
 def test(input_s: str, expected: int) -> None:
