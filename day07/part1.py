@@ -45,11 +45,11 @@ def compute(s: str) -> int:
                         dirs[dir]=size
 
     ret={k: v for k, v in dirs.items() if v<=100000}
-    print(ret)
+   # print(ret)
    # print(dirs)
-    ret2=sorted(dirs.items(), key=lambda item: item[1],reverse=True)     
+    #ret2=sorted(dirs.items(), key=lambda item: item[1],reverse=True)     
     #print(ret2)
-    print(len(files.keys()))
+   # print(len(files.keys()))
     return sum(ret.values())
 
 #[['', 'D', ''], ['N', 'C', ''], ['Z', 'M', 'P'], ['', '1', '', '', '2', '', '', '3', '']]
